@@ -1,0 +1,110 @@
+IsFirstPerson = false
+	WHeld = false
+	SHeld = false
+	AHeld = false
+	DHeld = false
+	local L_167_ = true
+    local activar = false
+	urspeed = 0.1
+	function ChangeFaster(L_168_arg0, L_169_arg1)
+		if L_168_arg0.KeyCode == Enum.KeyCode.Down and L_169_arg1 == false then
+			urspeed = urspeed - 0.01
+		end
+	end
+	function ChangeSlower(L_170_arg0, L_171_arg1)
+		if L_170_arg0.KeyCode == Enum.KeyCode.Up and L_171_arg1 == false then
+			urspeed = urspeed + 0.01
+		end
+	end
+	function GChecker(L_172_arg0, L_173_arg1)
+		if L_172_arg0.KeyCode == Enum.KeyCode.N and L_173_arg1 == false then
+			if L_167_ == false then
+				L_167_ = true
+			elseif L_167_ == true then
+				L_167_ = false
+			end
+		end
+	end
+	function PressW(L_178_arg0, L_179_arg1)
+		if L_178_arg0.KeyCode == Enum.KeyCode.W and L_179_arg1 == false and L_167_ == true then
+			WHeld = true
+		end
+	end
+	function ReleaseW(L_180_arg0, L_181_arg1)
+		if L_180_arg0.KeyCode == Enum.KeyCode.W then
+			WHeld = false
+		end
+	end
+	function PressS(L_182_arg0, L_183_arg1)
+		if L_182_arg0.KeyCode == Enum.KeyCode.S and L_183_arg1 == false and L_167_ == true then
+			SHeld = true
+		end
+	end
+	function ReleaseS(L_184_arg0, L_185_arg1)
+		if L_184_arg0.KeyCode == Enum.KeyCode.S then
+			SHeld = false
+		end
+	end
+	function PressA(L_186_arg0, L_187_arg1)
+		if L_186_arg0.KeyCode == Enum.KeyCode.A and L_187_arg1 == false and L_167_ == true then
+			AHeld = true
+		end
+	end
+	function ReleaseA(L_188_arg0, L_189_arg1)
+		if L_188_arg0.KeyCode == Enum.KeyCode.A then
+			AHeld = false
+		end
+	end
+	function PressD(L_190_arg0, L_191_arg1)
+		if L_190_arg0.KeyCode == Enum.KeyCode.D and L_191_arg1 == false and L_167_ == true then
+			DHeld = true
+		end
+	end
+	function ReleaseD(L_192_arg0, L_193_arg1)
+		if L_192_arg0.KeyCode == Enum.KeyCode.D then
+			DHeld = false
+		end
+	end
+	function CheckFirst(L_194_arg0, L_195_arg1)
+		if L_194_arg0.KeyCode == Enum.UserInputType.MouseWheel then
+			if (player.Character.Head.CFrame.p - workspace.CurrentCamera.CFrame.p).magnitude < 0.6 then
+				IsFirstPerson = true
+			elseif (player.Character.Head.CFrame.p - workspace.CurrentCamera.CFrame.p).magnitude > 0.6 then
+				IsFirstPerson = false
+			end
+		end
+	end
+	game:GetService("UserInputService").InputBegan:connect(PressShift)
+	game:GetService("UserInputService").InputEnded:connect(ReleaseShift)
+	game:GetService("UserInputService").InputBegan:connect(PressW)
+	game:GetService("UserInputService").InputEnded:connect(ReleaseW)
+	game:GetService("UserInputService").InputBegan:connect(PressS)
+	game:GetService("UserInputService").InputEnded:connect(ReleaseS)
+	game:GetService("UserInputService").InputBegan:connect(PressA)
+	game:GetService("UserInputService").InputEnded:connect(ReleaseA)
+	game:GetService("UserInputService").InputBegan:connect(PressD)
+	game:GetService("UserInputService").InputEnded:connect(ReleaseD)
+	game:GetService("UserInputService").InputChanged:connect(CheckFirst)
+	game:GetService("UserInputService").InputBegan:connect(ChangeFaster)
+	game:GetService("UserInputService").InputBegan:connect(ChangeSlower)
+	game:GetService("RunService").Stepped:connect(
+            function()
+		if activar == true then
+			if WHeld == true then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -urspeed)
+			end
+			if SHeld == true then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, urspeed)
+			end
+			if DHeld == true then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(urspeed, 0, 0)
+			end
+			if AHeld == true then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame =
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-urspeed, 0, 0)
+			end
+		end
+end)
